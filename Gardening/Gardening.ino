@@ -65,10 +65,10 @@ struct Limens
 typedef struct Limens WorkingLimens;
 WorkingLimens SystemLimens;
 
-#define DHTPIN          A0     // what pin we're connected to
-#define MoisturePin     A1
-#define ButtonPin       2
-// Uncomment whatever type you're using!
+#define DHTPIN          A0     // brochage du capteur DHT11 sur A0
+#define MoisturePin     A1     // brochage du capteurd'humidité du sol sur A1
+#define ButtonPin       2      // brochage du capteur Bouton poussoir sur D2
+// décommenter celui que vous utiliser, commenter les autres
 #define DHTTYPE DHT11   // DHT 11 
 //#define DHTTYPE DHT22   // DHT 22  (AM2302)
 //#define DHTTYPE DHT21   // DHT 21 (AM2301)
@@ -86,8 +86,8 @@ WorkingLimens SystemLimens;
 
 unsigned int  uiWaterVolume = 0;
 unsigned char WaterflowFlag = 0;
-unsigned int  WaterflowRate = 0;  // L/Hour
-unsigned int  NbTopsFan     = 0;  // count the edges
+unsigned int  WaterflowRate = 0;  // Litre/Heure
+unsigned int  NbTopsFan     = 0;  // compter les bords
 
 unsigned char EncoderFlag = 0;
 unsigned long StartTime   = 0;
@@ -114,11 +114,11 @@ void setup()
 {
     /* Init OLED */
     Wire.begin();
-    SeeedOled.init();  //initialze SEEED OLED display
+    SeeedOled.init();  //initialiser l'afficheur OLED
     DDRB|=0x21;        
     PORTB |= 0x21;
-    SeeedOled.clearDisplay();          //clear the screen and set start position to top left corner
-    SeeedOled.setNormalDisplay();      //Set display to normal mode (i.e non-inverse mode)
+    SeeedOled.clearDisplay();          //effacer l'écran et placer le curseur en haut à gauche
+    SeeedOled.setNormalDisplay();      //Configurer l'afficheur en mode normal (i.e non-inverse mode)
     SeeedOled.setPageMode();           //Set addressing mode to Page Mode
 
 //    encoder.Timer_init();
