@@ -1,31 +1,14 @@
 /*    
  * Gardening.c
- * Gardening Demo for Arduino 
+ * Fichier de démo du kit d'arrosage 
  *   
  * Copyright (c) 2015 seeed technology inc.  
- * Author      : Jiankai.li  
- * Create Time:  Aug 2015
- * Change Log : 
+ * Auteur      : Jiankai.li  
+ * créé le:  Aout 2015
+ *Traduit par L.Chastain
+ Mai 2020
  *
- * The MIT License (MIT)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+
  */
 #include <Wire.h>
 #include <SeeedOLED.h>
@@ -141,7 +124,7 @@ void setup()
 //    encoder.Timer_init();
     /* Init DHT11 */
     Serial.begin(9600); 
-    Serial.println("Starting up...");
+    Serial.println("Démarrage en cours...");
     dht.begin();
     
     /* Init Button */
@@ -306,36 +289,36 @@ void loop()
         break;
     case Warning:
         SeeedOled.setTextXY(2,4);
-        SeeedOled.putString("Warning!");
+        SeeedOled.putString("Attention!");
         switch (SystemWarning) {
         case AirHumidityWarning:
             if (DHTHumidity < SystemLimens.DHTHumidity_Low ) {
                 SeeedOled.setTextXY(5,2);
-                SeeedOled.putString("Humidity  Low");
+                SeeedOled.putString("Taux d'huminité  Bas");
             } else {
                 SeeedOled.setTextXY(5,2);
-                SeeedOled.putString("Humidity High");
+                SeeedOled.putString("Taux d'huminité  Haut");
             }
             break;
         case AirTemperWarning:
             if (DHTTemperature < SystemLimens.DHTTemperature_Low) {
                 SeeedOled.setTextXY(5,3);
-                SeeedOled.putString("Temp  Low");
+                SeeedOled.putString("Temp.  Basse");
             } else {
                 SeeedOled.setTextXY(5,3);
-                SeeedOled.putString("Temp High");
+                SeeedOled.putString("Temp. Haute");
             }                
             break;
         case UVIndexWarning:
             if (DHTTemperature > SystemLimens.UVIndex_Limen) {
                 SeeedOled.setTextXY(5,4);
-                SeeedOled.putString("UV   High");
+                SeeedOled.putString("UV   Haut");
             } else {
             }
             break;
         case NoWaterWarning:
                 SeeedOled.setTextXY(5,3);
-                SeeedOled.putString("No  Water");
+                SeeedOled.putString("Plus d'eau");
                 if (ButtonFlag == 1) {
                     ButtonFlag = 0;
                     // SwitchtoStandbyFlag = 1;
@@ -430,7 +413,7 @@ void loop()
             WaterPumpOff();
             SeeedOled.clearDisplay();
             SeeedOled.setTextXY(4,2);
-            SeeedOled.putString("Done Watering");
+            SeeedOled.putString("Arroser");
             SwitchtoStandbyFlag = 0;
             ButtonFlag = 0;
             LCDPage = 3;
@@ -474,7 +457,7 @@ void DisplayUVIndex()
     SeeedOled.setTextXY(2,7);          //Set the cursor to Xth Page, Yth Column  
     SeeedOled.putString(buffer);
     
-    sprintf(buffer,"Safe Value");
+    sprintf(buffer,"Valeur Sécurité");
     SeeedOled.setTextXY(5,3);
     SeeedOled.putString(buffer);
     
@@ -484,7 +467,7 @@ void DisplayUVIndex()
     SeeedOled.putString(buffer);
     
     if (digitalRead(ButtonPin) == 1) {
-        Serial.println("BUTTON");
+        Serial.println("BOUTON");
         if (EncoderFlag == 1) {
         delay(100);
         EncoderFlag = 0;
@@ -513,7 +496,7 @@ void DisplayUVIndex()
 
 void DisplayAirHumidity()
 {
-    sprintf(buffer,"Humidity");
+    sprintf(buffer,"Humidité");
     SeeedOled.setTextXY(1,4);          //Set the cursor to Xth Page, Yth Column  
     SeeedOled.putString(buffer);
 
@@ -521,7 +504,7 @@ void DisplayAirHumidity()
     SeeedOled.setTextXY(2,6);          //Set the cursor to Xth Page, Yth Column  
     SeeedOled.putString(buffer);
     
-    sprintf(buffer,"< Safe Value <"); 
+    sprintf(buffer,"< Valeur de sécurité <"); 
     SeeedOled.setTextXY(5,2);
     SeeedOled.putString(buffer);
     
@@ -534,11 +517,11 @@ void DisplayAirHumidity()
     SeeedOled.putString(buffer);
     
     if(ButtonIndex == 0) {
-        sprintf(buffer,"Low<--     High"); 
+        sprintf(buffer,"Bas<--     Haut"); 
         SeeedOled.setTextXY(6,1);
         SeeedOled.putString(buffer);
         if (digitalRead(ButtonPin) == 1) {
-            Serial.println("BUTTON");
+            Serial.println("BOUTON");
             if (EncoderFlag == 1) {
                 delay(100);
                 EncoderFlag = 0;
@@ -562,12 +545,12 @@ void DisplayAirHumidity()
             } 
         }
     } else {
-        sprintf(buffer,"Low     -->High"); 
+        sprintf(buffer,"Bas     -->Haut"); 
         SeeedOled.setTextXY(6,1);
         SeeedOled.putString(buffer);
         if (digitalRead(ButtonPin) == 1) {
 
-            Serial.println("BUTTON");
+            Serial.println("BOUTON");
             if (EncoderFlag == 1) {
                 delay(100);
                 EncoderFlag = 0;
@@ -595,7 +578,7 @@ void DisplayAirHumidity()
 
 void DisplayAirTemp()
 {
-    sprintf(buffer,"Temperature");
+    sprintf(buffer,"Température");
     SeeedOled.setTextXY(1,2);          //Set the cursor to Xth Page, Yth Column  
     SeeedOled.putString(buffer);
 
@@ -603,7 +586,7 @@ void DisplayAirTemp()
     SeeedOled.setTextXY(2,5);          //Set the cursor to Xth Page, Yth Column  
     SeeedOled.putString(buffer);
     
-    sprintf(buffer,"< Safe Value <"); 
+    sprintf(buffer,"< Valeur Sécurité <"); 
     SeeedOled.setTextXY(5,2);
     SeeedOled.putString(buffer);
     sprintf(buffer,"%2d.0*C",(int)(SystemLimens.DHTTemperature_Low)); 
@@ -615,11 +598,11 @@ void DisplayAirTemp()
     SeeedOled.putString(buffer);
 
     if(ButtonIndex == 0) {
-        sprintf(buffer,"Low<--     High"); 
+        sprintf(buffer,"Bas<--     Haut"); 
         SeeedOled.setTextXY(6,1);
         SeeedOled.putString(buffer);
         if (digitalRead(ButtonPin) == 1) {
-                      Serial.println("BUTTON");
+                      Serial.println("BOUTON");
             if (EncoderFlag == 1) {
                 delay(100);
                 EncoderFlag = 0;
@@ -643,11 +626,11 @@ void DisplayAirTemp()
             } 
         }
     } else {
-        sprintf(buffer,"Low     -->High"); 
+        sprintf(buffer,"Bas     -->Haut"); 
         SeeedOled.setTextXY(6,1);
         SeeedOled.putString(buffer);
         if (digitalRead(ButtonPin) == 1) {
-            Serial.println("BUTTON");
+            Serial.println("BOUTON");
             if (EncoderFlag == 1) {
                 delay(100);
                 EncoderFlag = 0;
@@ -675,7 +658,7 @@ void DisplayAirTemp()
 
 void DisplayMoisture() 
 {
-    sprintf(buffer,"Moisture");
+    sprintf(buffer,"SOL");
     SeeedOled.setTextXY(1,4);          //Set the cursor to Xth Page, Yth Column  
     SeeedOled.putString(buffer);
 
@@ -685,13 +668,13 @@ void DisplayMoisture()
    
     
     SeeedOled.setTextXY(5,3);
-    SeeedOled.putString("Safe Value");
+    SeeedOled.putString("Valeur Sécurité");
     
     sprintf(buffer,"%d.0%%",(int)(SystemLimens.MoisHumidity_Limen)); 
     SeeedOled.setTextXY(6,6);
     SeeedOled.putString(buffer);  
     if (digitalRead(ButtonPin) == 1) {
-        Serial.println("BUTTON");
+        Serial.println("BOUTON");
         if (EncoderFlag == 1) {
         delay(100);
         EncoderFlag = 0;
@@ -720,12 +703,12 @@ void DisplayMoisture()
 void DisplayHello()
 {
     SeeedOled.setTextXY(0,0);          //Set the cursor to Xth Page, Yth Column  
-    SeeedOled.putString("Smart Plant Care");    
+    SeeedOled.putString("");    
     SeeedOled.setTextXY(2,0);          //Set the cursor to Xth Page, Yth Column  
-    SeeedOled.putString("Press Button to");
+    SeeedOled.putString("Appuie sur le bouton à");
     SeeedOled.setTextXY(3,0);          //Set the cursor to Xth Page, Yth Column  
-    SeeedOled.putString("start watering");
-    sprintf(buffer,"Moisture:");
+    SeeedOled.putString("Arrosage commencé");
+    sprintf(buffer,"Sole:");
     SeeedOled.setTextXY(6,4);          //Set the cursor to Xth Page, Yth Column  
     SeeedOled.putString(buffer);
     sprintf(buffer,"%d.%d%% ",(int)(MoisHumidity),(int)((int)(MoisHumidity*100) % 100));
@@ -738,12 +721,12 @@ void DisplayVolume()
 {
     unsigned int Volumetemp;
     Volumetemp = SystemLimens.WaterVolume*10;
-    sprintf(buffer,"WaterVolume");
+    sprintf(buffer,"Volume d'eau");
     SeeedOled.setTextXY(2,3);          //Set the cursor to Xth Page, Yth Column  
     SeeedOled.putString(buffer);
 
     SeeedOled.setTextXY(5,2);
-    SeeedOled.putString("Volume Limen");
+    SeeedOled.putString("Quantité de lumens");
     
     sprintf(buffer,"%2d.%dL",(Volumetemp/10),(Volumetemp%10)); 
     SeeedOled.setTextXY(6,5);
@@ -751,7 +734,7 @@ void DisplayVolume()
     SeeedOled.putString(buffer);
     
     if (digitalRead(ButtonPin) == 1) {
-        Serial.println("BUTTON");
+        Serial.println("BOUTON");
         if (EncoderFlag == 1) {
         delay(100);
         EncoderFlag = 0;
@@ -784,9 +767,9 @@ void StandbytoWatering()
     WorkingStatus = Watering;
     WaterPumpOn();
     SeeedOled.setTextXY(0,3);
-    SeeedOled.putString("Watering");
+    SeeedOled.putString("Arrosage");
     SeeedOled.setTextXY(2,0);
-    SeeedOled.putString("FlowRate:");
+    SeeedOled.putString("Débit:");
     SeeedOled.setTextXY(4,0);
     SeeedOled.putString("Volume:");
     StartTime = millis();
